@@ -56,31 +56,24 @@ const operators = document.querySelectorAll('.operator').forEach(item => {
 });
 
 const equal = document.getElementById('equal').addEventListener('click', event => {
-    console.log(num2str);
-    if (num2str == "Math Error!") {
-        secondaryDisplay(" ", " ", " ");
-        display("Math Error!");
-    } else {
-        intermediateResult = operate(num2str, readOperator, num1str);
-        secondaryDisplay(num2str, readOperator, num1str);
-        num2str = intermediateResult;
-        display(intermediateResult);
-   
+    if (num2str != "" && readOperator != "") {
+        if (num2str == "Math Error!" || (num2str != "" && readOperator !="%" && num1str === "")) {
+            secondaryDisplay(" ", " ", " ");
+            display("Math Error!");
+        } else {
+            intermediateResult = operate(num2str, readOperator, num1str);
+            secondaryDisplay(num2str, readOperator, num1str);
+            num2str = intermediateResult;
+            display(intermediateResult);
+        }
     //empty variables
-    intermediateResult = "";
-    num1str = "";
-    }
+    clearDisplay();
+    } 
+    secondaryDisplay(" "," "," ",);
 });
 
 const clear =  document.getElementById('clear').addEventListener('click', event => {
-    countPoint = 0;
-    countOperator = 0;
-    intermediateResult = 0;
-    isIntermediateResultPresent = false;
-    existPoint = false;
-    num1str = "";
-    num2str = "";
-    readOperator = "";
+    clearDisplay();
     secondaryDisplay(" "," "," ",);
     display(" ");
 });
@@ -91,31 +84,6 @@ const back = document.getElementById('backspace').addEventListener('click', even
     countPoint = 0;
     display(num1str);
 })
-
-function storeVariable(stringValue) {
-    if (stringValue === "+/-"){ 
-        if (num1str !== "") {
-            var stringArray = num1str.split('');
-            stringArray.unshift('-');
-            var newString = stringArray.join('');
-            num1str = newString; 
-        }
-        else {
-            stringValue = "-";
-            num1str = stringValue;
-        }
-    } else if (!intermediateResult) {
-        var firstDigit = stringValue;
-        num1str += firstDigit;
-    }   
-}
-
-function storeOperator(operator) {readOperator=operator;}
-
-function display(displayValue) {document.querySelector('.main-display').innerText=displayValue;}
-function secondaryDisplay(value1, value2, value3) {
-    document.querySelector('.second-display').innerText=value1.concat(value2, value3);
-}
 
 //operational functions
 function adding(num1, num2) {return num1 + num2;} 
@@ -167,4 +135,39 @@ function operate(num1, operator, num2) {
             break;
         }
     }
+}
+
+//helping functions
+function storeVariable(stringValue) {
+    if (stringValue === "+/-"){ 
+        if (num1str !== "") {
+            var stringArray = num1str.split('');
+            stringArray.unshift('-');
+            var newString = stringArray.join('');
+            num1str = newString; 
+        }
+        else {
+            stringValue = "-";
+            num1str = stringValue;
+        }
+    } else if (!intermediateResult) {
+        var firstDigit = stringValue;
+        num1str += firstDigit;
+    }   
+}
+
+function storeOperator(operator) {readOperator=operator;}
+
+function display(displayValue) {document.querySelector('.main-display').innerText=displayValue;}
+function secondaryDisplay(value1, value2, value3) {document.querySelector('.second-display').innerText=value1.concat(value2, value3);}
+
+function clearDisplay() {
+    countPoint = 0;
+    countOperator = 0;
+    intermediateResult = 0;
+    isIntermediateResultPresent = false;
+    existPoint = false;
+    num1str = "";
+    num2str = "";
+    readOperator = "";
 }
